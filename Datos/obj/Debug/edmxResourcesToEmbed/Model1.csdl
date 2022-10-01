@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AlfaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Alumnos">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="genero" Type="Boolean" Nullable="false" />
+    <Property Name="edad" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BecasAlumnos" Relationship="Self.FK__BecasAlum__idAlu__2B3F6F97" FromRole="Alumnos" ToRole="BecasAlumnos" />
+  </EntityType>
+  <EntityType Name="Becas">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="id_tipo" Type="Int32" />
+    <NavigationProperty Name="TipoBecas" Relationship="Self.FK__Becas__id_tipo__286302EC" FromRole="Becas" ToRole="TipoBecas" />
+    <NavigationProperty Name="BecasAlumnos" Relationship="Self.FK__BecasAlum__idBec__2C3393D0" FromRole="Becas" ToRole="BecasAlumnos" />
+  </EntityType>
+  <EntityType Name="BecasAlumnos">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAlumno" Type="Int32" />
+    <Property Name="idBecas" Type="Int32" />
+    <NavigationProperty Name="Alumnos" Relationship="Self.FK__BecasAlum__idAlu__2B3F6F97" FromRole="BecasAlumnos" ToRole="Alumnos" />
+    <NavigationProperty Name="Becas" Relationship="Self.FK__BecasAlum__idBec__2C3393D0" FromRole="BecasAlumnos" ToRole="Becas" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TipoBecas">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Becas" Relationship="Self.FK__Becas__id_tipo__286302EC" FromRole="TipoBecas" ToRole="Becas" />
+  </EntityType>
+  <Association Name="FK__BecasAlum__idAlu__2B3F6F97">
+    <End Role="Alumnos" Type="Self.Alumnos" Multiplicity="0..1" />
+    <End Role="BecasAlumnos" Type="Self.BecasAlumnos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alumnos">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="BecasAlumnos">
+        <PropertyRef Name="idAlumno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Becas__id_tipo__286302EC">
+    <End Role="TipoBecas" Type="Self.TipoBecas" Multiplicity="0..1" />
+    <End Role="Becas" Type="Self.Becas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoBecas">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Becas">
+        <PropertyRef Name="id_tipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BecasAlum__idBec__2C3393D0">
+    <End Role="Becas" Type="Self.Becas" Multiplicity="0..1" />
+    <End Role="BecasAlumnos" Type="Self.BecasAlumnos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Becas">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="BecasAlumnos">
+        <PropertyRef Name="idBecas" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AlfaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Alumnos" EntityType="Self.Alumnos" />
+    <EntitySet Name="Becas" EntityType="Self.Becas" />
+    <EntitySet Name="BecasAlumnos" EntityType="Self.BecasAlumnos" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="TipoBecas" EntityType="Self.TipoBecas" />
+    <AssociationSet Name="FK__BecasAlum__idAlu__2B3F6F97" Association="Self.FK__BecasAlum__idAlu__2B3F6F97">
+      <End Role="Alumnos" EntitySet="Alumnos" />
+      <End Role="BecasAlumnos" EntitySet="BecasAlumnos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Becas__id_tipo__286302EC" Association="Self.FK__Becas__id_tipo__286302EC">
+      <End Role="TipoBecas" EntitySet="TipoBecas" />
+      <End Role="Becas" EntitySet="Becas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BecasAlum__idBec__2C3393D0" Association="Self.FK__BecasAlum__idBec__2C3393D0">
+      <End Role="Becas" EntitySet="Becas" />
+      <End Role="BecasAlumnos" EntitySet="BecasAlumnos" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

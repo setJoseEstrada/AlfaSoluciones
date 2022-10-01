@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Entidades.BecasAlumnos>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+<select name="idAlumno" class="form-control" >
+
+    <option  >Alumnos sin Beca</option>
+    @foreach(var Alumno in ViewBag.SinBeca)
+    {
+        <option value="@Alumno.id">@Alumno.nombre</option>
+    }
+</select>
+       
+<input type="text" id="txtsearch" class="form-control" placeholder="Buscar por Tipo de Beca o Nombre"/>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NombreAlumno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NombreBeca)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TiopoBeca)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreAlumno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreBeca)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TiopoBeca)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+
+    $("#txtsearch").on("keyup", function () {
+
+        var txt = $(this).val();
+        $("table tr").each(function (Model) {
+            if (Model !== 0) {
+                var id = $(this).find("td:nth-child(odd)").text();
+                if (id.indexOf(txt) !== 0 && id.toLowerCase().indexOf(txt.toLowerCase()) < 0) {
+                    $(this).hide();
+                    
+                }
+                else {
+                    $(this).show();
+
+                }
+            }
+
+        });
+    });
+
+</script>
+
